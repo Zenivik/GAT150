@@ -1,26 +1,46 @@
-#include <iostream>
+#include "Engine.h"
 #include "SDL.h"
+#include "SDL_image.h"
+#include <iostream>
 
 int main(int, char**)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	nc::Engine engine;
+	engine.Startup();
+
+	engine.Get<nc::Renderer>()->Create("GAT150", 800, 600);
+
+	std::cout << nc::GetFilePath() << std::endl;
+	nc::SetFilePath("../Resources");
+	std::cout << nc::GetFilePath() << std::endl;
+		
+	std::shared_ptr<nc::Texture> texture = engine.Get<nc::ResourceSystem>()->Get<nc::Texture>("sf2.png", engine.Get<nc::Renderer>());
+
+	bool quit = false;
+	SDL_Event event;
+	while (!quit)
 	{
-		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
-		return 1;
+		SDL_PollEvent(&event);
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			quit = true;
+			break;
+		}
+
+		engine.Get<nc::Renderer>()->BeginFrame();
+		
+		engine.Get<nc::Renderer>()->EndFrame();
+
+		/*for (size_t i = 0; i < 50; i++)
+		{
+			SDL_Rect src{ 32, 64, 32, 64 };
+			SDL_Rect dest{ nc::RandomRangeInt(0,800), nc::RandomRangeInt(0,800), 16, 24 };
+			SDL_RenderCopy(renderer, texture, &src, &dest);
+		}*/
+			
 	}
-
-	SDL_Window* window = SDL_CreateWindow("GAT150", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
-	if (window == nullptr)
-	{
-		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}
-
-	// wait for keyboard enter to exit
-	std::getchar();
-
-
+	
 	SDL_Quit();
 
 	return 0;

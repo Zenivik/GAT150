@@ -5,18 +5,124 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
+    <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{1ac9fe19-7086-4450-8b3c-c9cedb3fad90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{d6c2ca79-b168-4aa5-8d04-10742b6f8624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Framework">
+      <UniqueIdentifier>{43615434-ac4f-423e-8f8d-c6080d772e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{8a316dc9-fc0e-4c78-a27e-e71b8722ac25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{1f7b973e-4541-4a3d-9608-8aa80fb6dd62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{2673d95d-3211-49e9-a8ba-b53bc62bf84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{729325d5-cdb1-47cb-8f17-798c5cd687b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource">
+      <UniqueIdentifier>{861de301-d87a-49e6-a48d-7b9e0a4f9a39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\EventSystem.cpp">
+      <Filter>Source Files\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Color.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Random.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Transform.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector2.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Actor.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Scene.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\FileSystem.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Renderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Texture.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\EventSystem.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System.h">
+      <Filter>Source Files\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Color.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathUtils.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix22.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix33.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Random.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Transform.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector2.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Actor.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Object.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Scene.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceSystem.h">
+      <Filter>Source Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\FileSystem.h">
+      <Filter>Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Renderer.h">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Texture.h">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>Source Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
