@@ -18,7 +18,7 @@ namespace nc
 		}
 
 		// create texture
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+		texture = SDL_CreateTextureFromSurface(renderer, surface);
 		SDL_FreeSurface(surface);
 		if (texture == nullptr)
 		{
@@ -26,5 +26,12 @@ namespace nc
 			return false;
 		}
 		return true;
+	}
+
+	Vector2 Texture::GetSize() const
+	{
+		SDL_Point point;
+		SDL_QueryTexture(texture, nullptr, nullptr, &point.x, &point.y);
+		return { point.x, point.y };
 	}
 }

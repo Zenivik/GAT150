@@ -45,14 +45,14 @@ namespace nc
 			}
 		}
 	}
-	void Scene::Draw()
+	void Scene::Draw(Renderer* renderer)
 	{
-		
+		std::for_each(actors.begin(), actors.end(), [renderer](auto& actor) { actor->Draw(renderer); });
 	}
 
 	void Scene::AddActor(std::unique_ptr<Actor> actor)
 	{
-		actor->scene = this;
+		actor.get()->scene = this;
 		actor->Initialize();
 
 		newActors.push_back(std::move(actor));

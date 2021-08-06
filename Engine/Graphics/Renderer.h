@@ -1,5 +1,7 @@
 #pragma once
 #include "Framework/System.h"
+#include "Texture.h"
+#include "Math/Transform.h"
 #include "SDL.h"
 #include <string>
 
@@ -15,6 +17,9 @@ namespace nc
 		void Create(const std::string& name, int width, int height);
 		void BeginFrame();
 		void EndFrame();
+
+		void Draw(std::shared_ptr<nc::Texture> texture, const Vector2& position, float angle, const Vector2& scale = Vector2::one);
+		void Draw(std::shared_ptr<nc::Texture> texture, const Transform& transform);
 
 		friend class Texture;
 
