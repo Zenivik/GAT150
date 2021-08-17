@@ -9,6 +9,7 @@ namespace nc
 	public:
 		void Update() override;
 		void ApplyForce(const Vector2& force) { acceleration += force; }
+
 	public:
 		Vector2 velocity;
 		Vector2 acceleration;
