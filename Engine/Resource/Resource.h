@@ -8,4 +8,5 @@ namespace nc
 	public:
 		virtual bool Load(const std::string& filename, void* data = nullptr) = 0;
 	};
+
 }

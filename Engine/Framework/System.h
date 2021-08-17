@@ -2,6 +2,8 @@
 
 namespace nc
 {
+	class Renderer;
+
 	class System
 	{
 	public:
@@ -13,7 +15,6 @@ namespace nc
 	class GraphicsSystem : public System
 	{
 	public:
-		virtual void Draw() = 0;
-
+		virtual void Draw(Renderer* renderer) = 0;
 	};
 }

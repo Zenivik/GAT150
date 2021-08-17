@@ -1,10 +1,15 @@
 #pragma once
 // systems
-//#include "Audio/AudioSystem.h"
+#include "Audio/AudioSystem.h"
 
 // core
+#include "Core/Utilities.h"
 #include "Core/FileSystem.h"
 #include "Core/Timer.h"
+
+
+// input
+#include "Input/InputSystem.h"
 
 // math
 #include "Math/Vector2.h"
@@ -15,8 +20,10 @@
 
 // graphics
 //#include "Graphics/Shapes.h"
+#include "Graphics/Font.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Texture.h"
+#include "Graphics/ParticleSystem.h"
 
 // objects
 #include "Object/Actor.h"
@@ -41,7 +48,7 @@ namespace nc
 		void Shutdown();
 
 		void Update();
-		void Draw();
+		void Draw(Renderer* renderer);
 
 		template<typename T>
 		T* Get();
