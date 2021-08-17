@@ -29,6 +29,10 @@
 #include "Object/Actor.h"
 #include "Object/Scene.h"
 
+// components
+#include "Component/SpriteComponent.h"
+#include "Component/PhysicsComponent.h"
+
 // Framework
 #include "Framework/EventSystem.h"
 
