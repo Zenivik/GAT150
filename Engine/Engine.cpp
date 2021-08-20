@@ -12,6 +12,8 @@ namespace nc
 		systems.push_back(std::make_unique<InputSystem>());
 
 		std::for_each(systems.begin(), systems.end(), [](auto& system) { system->Startup(); });
+
+		ObjectFactory::instance().Register<nc::SpriteAnimationComponent>("SpriteAnimationComponent");
 	}
 
 	void Engine::Shutdown()
