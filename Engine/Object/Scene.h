@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "Core/Serializable.h"
 #include <vector>
 #include <list>
 #include <memory>
@@ -11,7 +12,7 @@ namespace nc
 	class Engine;
 	class Renderer;
 
-	class Scene : public Object
+	class Scene : public Object, public ISerializable
 	{
 	public:
 		void Update(float dt);
@@ -20,6 +21,11 @@ namespace nc
 		void AddActor(std::unique_ptr<Actor> actor);
 		void RemoveActor(Actor* actor);
 		void RemoveAllActors();
+
+		Actor* FindActor(const std::string& name);
+
+		virtual bool Write(const rapidjson::Value& value) const override;
+		virtual bool Read(const rapidjson::Value& value) override;
 
 		template<typename T>
 		T* GetActor();
@@ -33,6 +39,7 @@ namespace nc
 	private:
 		std::vector<std::unique_ptr<Actor>> actors;
 		std::vector<std::unique_ptr<Actor>> newActors;
+
 	};
 
 	template<typename T>

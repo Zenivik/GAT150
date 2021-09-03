@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "GameComponent/PlayerComponent.h"
+#include "GameComponent/EnemyComponent.h"
+#include "GameComponent/PickupComponent.h"
 
 void Game::Initialize()
 {
@@ -7,6 +10,11 @@ void Game::Initialize()
 	engine->Startup();
 	engine->Get<nc::Renderer>()->Create("GAT150", 800, 600);
 
+	//components
+	REGISTER_CLASS(PlayerComponent);
+	REGISTER_CLASS(EnemyComponent);
+	REGISTER_CLASS(PickupComponent);
+
 	// create scene
 	scene = std::make_unique<nc::Scene>(); 
 	scene->engine = engine.get();
@@ -14,34 +22,13 @@ void Game::Initialize()
 	nc::SeedRandom(static_cast<unsigned int>(time(nullptr)));
 	nc::SetFilePath("../Resources");
 
+	engine->Get<nc::EventSystem>()->Subscribe("add_score", std::bind(&Game::OnAddScore, this, std::placeholders::_1));
 
-	// actors
-	std::unique_ptr<nc::Actor> actor = std::make_unique <nc::Actor>(nc::Transform{ nc::Vector2{400, 300}, 0, 1 });
-	{
-		auto component = nc::ObjectFactory::instance().Create<nc::SpriteAnimationComponent>("SpriteAnimationComponent");
-		//nc::SpriteAnimationComponent* component = actor->AddComponent<nc::SpriteAnimationComponent>();
-		component->texture = engine->Get<nc::ResourceSystem>()->Get<nc::Texture>("Textures/sparkle.png", engine->Get<nc::Renderer>());
-		component->fps = 30;
-		component->numFramesX = 8;
-		component->numFramesY = 8;
-		actor->AddComponent(std::move(component));
-	}
+	/*
 
-	//std::unique_ptr<nc::Actor> actor = std::make_unique<nc::Actor>(nc::Transform( nc::Vector2{ 400, 300 }, 0, 1 ));
-	//{
-	//	nc::SpriteComponent* component = actor->AddComponent<nc::SpriteComponent>();
-	//	component->texture = engine->Get<nc::ResourceSystem>()->Get<nc::Texture>("Textures/sparkle.png", engine->Get<nc::Renderer>());
-	//	actor->AddComponent(std::move(component));
-	//}
-
-	{
-		nc::PhysicsComponent* component = actor->AddComponent<nc::PhysicsComponent>();
-		//component->ApplyForce(nc::Vector2::right * 200);
-	}
-	scene->AddActor(std::move(actor));
-
-
-
+	auto actor = nc::ObjectFactory::instance().Create<nc::Actor>("coin");
+	actor->transform.position = nc::Vector2{ 700, 500 };
+	scene->AddActor(std::move(actor));*/
 }
 
 void Game::Shutdown()
@@ -58,6 +45,40 @@ void Game::Update()
 		quit = true;
 	}
 
+	switch (state)
+	{
+	case Game::eState::Reset:
+		Reset();
+		break;
+	case Game::eState::Title:
+		Title();
+		break;
+	case Game::eState::StartGame:
+		StartGame();
+		break;
+	case Game::eState::StartLevel:
+		StartLevel();
+		break;
+	case Game::eState::Level:
+		Level();
+		break;
+	case Game::eState::PlayerDead:
+		PlayerDead();
+		break;
+	case Game::eState::GameOver:
+		GameOver();
+		break;
+	default:
+		break;
+	}
+
+	// update score
+	auto scoreActor = scene->FindActor("score");
+	if (scoreActor)
+	{
+		scoreActor->GetComponent<nc::TextComponent>()->SetText("score: " + std::to_string(score));
+	}
+
 	scene->Update(engine->time.deltaTime);
 }
 
@@ -69,4 +90,96 @@ void Game::Draw()
 	scene->Draw(engine->Get<nc::Renderer>());
 
 	engine->Get<nc::Renderer>()->EndFrame();
+}
+
+void Game::Reset()
+{
+	scene->RemoveAllActors();
+
+	rapidjson::Document document;
+	bool success = nc::json::Load("Title.txt", document);
+	assert(success);
+
+	scene->Read(document);
+
+	state = eState::Title;
+}
+
+void Game::Title()
+{
+	if (engine->Get<nc::InputSystem>()->GetKeyState(SDL_SCANCODE_SPACE) == nc::InputSystem::eKeyState::Pressed)
+	{
+		auto title = scene->FindActor("Title");
+		title->active = false;
+
+
+		state = eState::StartGame;
+	}
+}
+
+void Game::StartGame()
+{
+	rapidjson::Document document;
+	bool success = nc::json::Load("scene.txt", document);
+	assert(success);
+	scene->Read(document);
+
+	nc::Tilemap tilemap;
+	tilemap.scene = scene.get();
+	success = nc::json::Load("map.txt", document);
+	assert(success);
+	tilemap.Read(document);
+	tilemap.Create();
+
+	state = eState::StartLevel;
+}
+
+void Game::StartLevel()
+{
+	stateTimer += engine->time.deltaTime;
+	//if (stateTimer >= 1)
+	{
+		auto player = nc::ObjectFactory::instance().Create<nc::Actor>("Player");
+		player->transform.position = { 400, 150 };
+		scene->AddActor(std::move(player));
+
+		spawnTimer = 2;
+		state = eState::Level;
+	}
+}
+
+void Game::Level()
+{
+	spawnTimer -= engine->time.deltaTime;
+	if (spawnTimer <= 0)
+	{
+		spawnTimer = nc::RandomRange(2, 3);
+		auto coin = nc::ObjectFactory::instance().Create<nc::Actor>("coin");
+		coin->transform.position = { nc::RandomRange(100, 700), 550.0f };
+		scene->AddActor(std::move(coin));
+
+		/*auto enemy = nc::ObjectFactory::instance().Create<nc::Actor>("enemy");
+		enemy->transform.position = { nc::RandomRange(100, 700), 550.0f };
+		scene->AddActor(std::move(enemy));*/
+	}
+
+	auto scoreActor = scene->FindActor("score");
+	if (scoreActor)
+	{
+		scoreActor->GetComponent<nc::TextComponent>()->SetText("score: " + std::to_string(score));
+	}
+
+}
+
+void Game::PlayerDead()
+{
+}
+
+void Game::GameOver()
+{
+}
+
+void Game::OnAddScore(const nc::Event& event)
+{
+	score += std::get<int>(event.data);
 }

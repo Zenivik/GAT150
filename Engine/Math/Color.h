@@ -15,6 +15,9 @@ namespace nc
 			g = ((rgb >> 8) & 0xff) / 255.0f;	// 0-255
 			b = ((rgb >> 16) & 0xff) / 255.0f;	// 0-255
 		}
+		
+		float operator [] (size_t index) const { return (&r)[index]; }
+		float& operator [] (size_t index) { return (&r)[index]; }
 
 		Color operator - (const Color& color) { return { r - color.r, g - color.g, b - color.b }; }
 		Color operator + (const Color& color) { return { r + color.r, g + color.g, b + color.b }; }
@@ -31,8 +34,10 @@ namespace nc
 
 
 		operator std::uint32_t() { return ToRGB(); }
+
 		friend std::istream& operator >> (std::istream& stream, Color& c);
-		
+		friend std::ostream& operator << (std::ostream& stream, Color& c);
+
 		std::uint32_t ToRGB()
 		{
 			std::uint8_t red = static_cast<std::uint8_t>(r * 255);
