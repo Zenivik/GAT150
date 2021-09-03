@@ -8,7 +8,7 @@
          "transform":{
             "position":[
                400,
-               200
+               500
             ],
             "scale":[
                2,
@@ -76,7 +76,7 @@
          "tag":"Enemy",
          "transform":{
             "position":[
-               110,
+               50,
                550
             ],
             "rotation":0

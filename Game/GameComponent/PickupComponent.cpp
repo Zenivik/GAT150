@@ -16,19 +16,7 @@ void PickupComponent::Update()
 
 void PickupComponent::OnCollisionEnter(const Event& event)
 {
-	void* p = std::get<void*>(event.data);
-	Actor* actor = reinterpret_cast<Actor*>(p);
-
-	if (istring_compare(actor->tag, "Player"))
-	{
-		owner->destroy = true;
-		owner->scene->engine->Get<AudioSystem>()->PlayAudio("coin");
-		Event event;
-		event.name = "add_score";
-		event.data = 100;
-
-		owner->scene->engine->Get<EventSystem>()->Notify(event);
-	}
+	
 }
 
 bool PickupComponent::Write(const rapidjson::Value& value) const

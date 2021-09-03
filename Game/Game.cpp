@@ -23,6 +23,7 @@ void Game::Initialize()
 	nc::SetFilePath("../Resources");
 
 	engine->Get<nc::EventSystem>()->Subscribe("add_score", std::bind(&Game::OnAddScore, this, std::placeholders::_1));
+	engine->Get<nc::EventSystem>()->Subscribe("player_dead", std::bind(&Game::OnPlayerHit, this, std::placeholders::_1));
 
 	/*
 
@@ -77,6 +78,12 @@ void Game::Update()
 	if (scoreActor)
 	{
 		scoreActor->GetComponent<nc::TextComponent>()->SetText("score: " + std::to_string(score));
+	}
+
+	auto livesActor = scene->FindActor("lives");
+	if (livesActor)
+	{
+		livesActor->GetComponent<nc::TextComponent>()->SetText("Lives: " + std::to_string(lives));
 	}
 
 	scene->Update(engine->time.deltaTime);
@@ -140,7 +147,7 @@ void Game::StartLevel()
 	//if (stateTimer >= 1)
 	{
 		auto player = nc::ObjectFactory::instance().Create<nc::Actor>("Player");
-		player->transform.position = { 400, 150 };
+		player->transform.position = { 400, 500 };
 		scene->AddActor(std::move(player));
 
 		spawnTimer = 2;
@@ -158,17 +165,7 @@ void Game::Level()
 		coin->transform.position = { nc::RandomRange(100, 700), 550.0f };
 		scene->AddActor(std::move(coin));
 
-		/*auto enemy = nc::ObjectFactory::instance().Create<nc::Actor>("enemy");
-		enemy->transform.position = { nc::RandomRange(100, 700), 550.0f };
-		scene->AddActor(std::move(enemy));*/
 	}
-
-	auto scoreActor = scene->FindActor("score");
-	if (scoreActor)
-	{
-		scoreActor->GetComponent<nc::TextComponent>()->SetText("score: " + std::to_string(score));
-	}
-
 }
 
 void Game::PlayerDead()
@@ -177,9 +174,35 @@ void Game::PlayerDead()
 
 void Game::GameOver()
 {
+	auto title = scene->FindActor("Title");
+	title->GetComponent<nc::TextComponent>()->SetText("YOU DIED! wow. Press space to try again.");
+	title->active = true;
+
+	if (engine->Get<nc::InputSystem>()->GetKeyState(SDL_SCANCODE_SPACE) == nc::InputSystem::eKeyState::Pressed)
+	{
+		auto title = scene->FindActor("Title");
+		title->active = false;
+		lives = 3;
+		state = eState::StartGame;
+	}
 }
 
 void Game::OnAddScore(const nc::Event& event)
 {
 	score += std::get<int>(event.data);
+}
+
+void Game::OnPlayerHit(const nc::Event& event)
+{
+	if (lives == 0)
+	{
+		state = eState::GameOver;
+	}
+	else 
+	{
+		lives -= std::get<int>(event.data);
+		auto player = nc::ObjectFactory::instance().Create<nc::Actor>("Player");
+		player->transform.position = { 400, 500 };
+		scene->AddActor(std::move(player));
+	}
 }

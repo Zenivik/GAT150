@@ -34,6 +34,7 @@ private:
 	void GameOver();
 	
 	void OnAddScore(const nc::Event& event);
+	void OnPlayerHit(const nc::Event& event);
 
 public:
 	std::unique_ptr<nc::Engine> engine;
@@ -46,4 +47,5 @@ private:
 	float stateTimer = 0;
 	float spawnTimer = 0;
 	int score = 0;
+	int lives = 3;
 };

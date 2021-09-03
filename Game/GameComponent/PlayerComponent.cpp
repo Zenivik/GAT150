@@ -62,12 +62,23 @@ void PlayerComponent::OnCollisionEnter(const Event& event)
 	if (istring_compare(actor->tag, "enemy"))
 	{
 		owner->scene->engine->Get<AudioSystem>()->PlayAudio("hurt");
+		owner->destroy = true;
+		Event event;
+		event.name = "player_dead";
+		event.data = 1;
+
+		owner->scene->engine->Get<EventSystem>()->Notify(event);
 	}
 
 	if (istring_compare(actor->tag, "pickup"))
 	{
 		owner->scene->engine->Get<AudioSystem>()->PlayAudio("coin");
 		actor->destroy = true;
+		Event event;
+		event.name = "add_score";
+		event.data = 100;
+
+		owner->scene->engine->Get<EventSystem>()->Notify(event);
 	}
 }
 

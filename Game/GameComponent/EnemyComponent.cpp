@@ -35,11 +35,13 @@ void EnemyComponent::Update()
 		Vector2 direction = owner->transform.position.x += 200;
 	}
 	Vector2 force = direction.Normalized() * speed;
-
+	
 	PhysicsComponent* physicsComponent = owner->GetComponent<PhysicsComponent>();
 	assert(physicsComponent);
 
 	physicsComponent->ApplyForce(force);
+	owner->transform.position.x = Wrap(owner->transform.position.x, 0.0f, 800.0f);
+	owner->transform.position.y = Wrap(owner->transform.position.y, 0.0f, 600.0f);
 }
 
 bool EnemyComponent::Write(const rapidjson::Value& value) const
